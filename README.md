@@ -1,1 +1,1 @@
-# fail2ban-security-map
+# Fail2ban Security Map
