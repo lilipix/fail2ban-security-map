@@ -1,5 +1,43 @@
 services:
   frontend:
     build: ./frontend
+    networks:
+      - public
+
+  postgres:
+    image: postgres:15
+    env_file:
+      - .env
+    volumes:
+      - pg_data:/var/lib/postgresql/data
+
+  backend:
+    build: ./backend
+    env_file:
+      - .env
+    depends_on:
+      - postgres
     ports:
-      - "8080:80"
+      - "3000:3000"
+    user: "1000:1000"
+
+  caddy:
+    image: caddy:2.10
+    container_name: caddy
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./data/caddy/Caddyfile:/etc/caddy/Caddyfile
+      - ./data/caddy/data:/data
+      - ./data/caddy/config:/config
+
+    networks:
+      - public
+    restart: unless-stopped
+
+volumes:
+  pg_data:
+
+networks:
+  public:
