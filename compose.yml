@@ -21,6 +21,11 @@ services:
       - public
     user: "1000:1000"
 
+  log-generator:
+    build: ./log-generator
+    volumes:
+      - ./logs:/logs
+
   caddy:
     image: caddy:2.10
     container_name: caddy
@@ -31,7 +36,6 @@ services:
       - ./data/caddy/Caddyfile:/etc/caddy/Caddyfile
       - ./data/caddy/data:/data
       - ./data/caddy/config:/config
-
     networks:
       - public
     restart: unless-stopped
