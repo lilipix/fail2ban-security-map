@@ -17,8 +17,8 @@ services:
       - .env
     depends_on:
       - postgres
-    ports:
-      - "3000:3000"
+    networks:
+      - public
     user: "1000:1000"
 
   caddy:
