@@ -5,3 +5,7 @@ fail2ban.localhost {
 api.fail2ban.localhost {
   reverse_proxy backend:3000
 }
+
+:80 {
+  reverse_proxy frontend:80
+}

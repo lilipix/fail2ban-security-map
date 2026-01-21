@@ -13,6 +13,21 @@ services:
       - public
     restart: unless-stopped
 
+  cloudflared:
+    image: cloudflare/cloudflared:2026.1.1
+    container_name: cloudflared
+    command: tunnel --url http://caddy:80
+    depends_on:
+      - caddy
+    user: "1000:1000"
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Europe/Paris
+    networks:
+      - public
+    restart: unless-stopped
+
 networks:
   public:
     external: true
