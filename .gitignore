@@ -3,3 +3,5 @@ node_modules
 infra/data
 fail2ban/logs/
 *.log
+frontend/.vite/
+logs/

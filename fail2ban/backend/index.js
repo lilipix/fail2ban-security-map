@@ -19,7 +19,7 @@ const pool = new Pool({
 app.get("/bans", async (req, res) => {
   try {
     const result = await pool.query(
-      "SELECT * FROM bans ORDER BY ban_date DESC",
+      "SELECT * FROM bans ORDER BY banned_at DESC",
     );
     res.json(result.rows);
   } catch (err) {

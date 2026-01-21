@@ -1,6 +1,7 @@
 import time
 import random
 from datetime import datetime
+import os
 
 ips = [
     "185.220.101.45",
@@ -12,7 +13,10 @@ ips = [
 
 services = ["ssh", "ftp", "nginx"]
 
-log_file = "/logs/auth.log"
+log_file = "/logs/app.log"
+
+if not os.path.exists("/logs"):
+    raise RuntimeError("/logs n'existe pas dans le conteneur")
 
 while True:
     ip = random.choice(ips)

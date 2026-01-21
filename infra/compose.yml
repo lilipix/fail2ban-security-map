@@ -1,24 +1,36 @@
 services:
-  caddy:
+  caddy-public:
     image: caddy:2.10
-    container_name: caddy
+    container_name: caddy-public
+    volumes:
+      - ./config/caddy-public/Caddyfile:/etc/caddy/Caddyfile
+      - ./data/caddy-public/data:/data
+      - ./data/caddy-public/config:/config
+    networks:
+      - public
+    restart: unless-stopped
+
+  caddy-private:
+    image: caddy:2.10
+    container_name: caddy-private
     ports:
       - "80:80"
       - "443:443"
+      - "443:443/udp"
     volumes:
-      - ./config/caddy/Caddyfile:/etc/caddy/Caddyfile
-      - ./data/caddy/data:/data
-      - ./data/caddy/config:/config
+      - ./config/caddy-private/Caddyfile:/etc/caddy/Caddyfile
+      - ./data/caddy-private/data:/data
+      - ./data/caddy-private/config:/config
     networks:
-      - public
+      - private
     restart: unless-stopped
 
   cloudflared:
     image: cloudflare/cloudflared:2026.1.1
     container_name: cloudflared
-    command: tunnel --url http://caddy:80
+    command: tunnel --url http://caddy-public:80
     depends_on:
-      - caddy
+      - caddy-public
     user: "1000:1000"
     environment:
       - PUID=1000
@@ -28,6 +40,25 @@ services:
       - public
     restart: unless-stopped
 
+  dockge:
+    image: louislam/dockge:1
+    container_name: dockge
+    restart: unless-stopped
+    ports:
+      - "5001:5001"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ./data/dockge:/app/data
+      - ../:/app/stacks
+    environment:
+      - DOCKGE_STACKS_DIR=/app/stacks
+      - DOCKGE_BASE_URL=/dockge
+    networks:
+      - private
+
 networks:
   public:
     external: true
+  private:
+    external: true
+    name: infra_private
