@@ -1,0 +1,18 @@
+services:
+  caddy:
+    image: caddy:2.10
+    container_name: caddy
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./config/caddy/Caddyfile:/etc/caddy/Caddyfile
+      - ./data/caddy/data:/data
+      - ./data/caddy/config:/config
+    networks:
+      - public
+    restart: unless-stopped
+
+networks:
+  public:
+    external: true

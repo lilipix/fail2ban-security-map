@@ -1,7 +1,7 @@
-frontend.localhost {
+fail2ban.localhost {
   reverse_proxy frontend:80
 }
 
-backend.localhost {
+api.fail2ban.localhost {
   reverse_proxy backend:3000
 }
