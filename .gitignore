@@ -1,3 +1,5 @@
 node_modules
 .env
 infra/data
+fail2ban/logs/
+*.log
