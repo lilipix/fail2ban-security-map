@@ -1,6 +1,7 @@
 import express from "express";
 import pkg from "pg";
 import cors from "cors";
+import { initGeoIP, lookupIp } from "./geoip.js";
 
 const { Pool } = pkg;
 
@@ -16,18 +17,30 @@ const pool = new Pool({
   port: 5432,
 });
 
-app.get("/bans", async (req, res) => {
-  try {
-    const result = await pool.query(
-      "SELECT * FROM bans ORDER BY banned_at DESC",
-    );
-    res.json(result.rows);
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ error: "Database error" });
-  }
-});
+// app.get("/bans", async (req, res) => {
+//   try {
+//     const result = await pool.query(
+//       "SELECT * FROM bans ORDER BY banned_at DESC",
+//     );
+//     res.json(result.rows);
+//   } catch (err) {
+//     console.error(err);
+//     res.status(500).json({ error: "Database error" });
+//   }
+// });
 
-app.listen(3000, () => {
-  console.log("Backend API running on port 3000");
-});
+async function start() {
+  try {
+    await initGeoIP();
+    console.log("[GeoIP] Ready");
+
+    app.listen(3000, () => {
+      console.log("Backend API running on port 3000");
+    });
+  } catch (err) {
+    console.error("Startup error:", err);
+    process.exit(1);
+  }
+}
+
+start();
