@@ -1,7 +1,13 @@
-node_modules
+node_modules/
 .env
 infra/data
-fail2ban/logs/
+fail2ban/log/
 *.log
 frontend/.vite/
 logs/
+fail2ban/fail2ban-config/fail2ban/
+geoip.env
+geoip-data/
+*.mmdb
+.geoipupdate.lock
+

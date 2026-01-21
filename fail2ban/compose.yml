@@ -14,12 +14,16 @@ services:
       - private
 
   backend:
+    container_name: backend
     build: ./backend
     env_file:
       - .env
     depends_on:
       - postgres
+    volumes:
+      - ./geoip-data:/usr/share/GeoIP:ro
     networks:
+      - default
       - private
     user: "1000:1000"
 
@@ -46,6 +50,15 @@ services:
     restart: unless-stopped
     networks:
       - private
+
+  geoip:
+    image: maxmindinc/geoipupdate
+    container_name: geoip
+    env_file:
+      - ./geoip.env
+    volumes:
+      - ./geoip-data:/usr/share/GeoIP
+    restart: unless-stopped
 
 volumes:
   pg_data:

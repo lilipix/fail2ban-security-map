@@ -17,22 +17,58 @@ const pool = new Pool({
   port: 5432,
 });
 
-// app.get("/bans", async (req, res) => {
-//   try {
-//     const result = await pool.query(
-//       "SELECT * FROM bans ORDER BY banned_at DESC",
-//     );
-//     res.json(result.rows);
-//   } catch (err) {
-//     console.error(err);
-//     res.status(500).json({ error: "Database error" });
-//   }
-// });
+// Routes
+app.get("/geoip-test", (req, res) => {
+  const result = lookupIp("8.8.8.8");
+  res.json({
+    country: result?.country?.isoCode,
+    lat: result?.location?.latitude,
+    lon: result?.location?.longitude,
+  });
+});
+
+app.get("/bans", async (req, res) => {
+  console.log(">>> /bans HIT");
+  try {
+    const { rows } = await pool.query(`
+      SELECT ip, jail, banned_at
+      FROM bans
+      ORDER BY banned_at DESC
+      LIMIT 500
+    `);
+
+    console.log(">>> bans rows:", rows.length);
+
+    const result = rows
+      .map((ban) => {
+        const ip = String(ban.ip);
+        const geo = lookupIp(ip);
+        if (!geo?.location) return null;
+
+        return {
+          ip: ban.ip,
+          jail: ban.jail,
+          date: ban.banned_at,
+          lat: geo.location.latitude,
+          lon: geo.location.longitude,
+        };
+      })
+      .filter(Boolean);
+
+    res.json(result);
+  } catch (err) {
+    console.error("Error fetching bans:", err);
+    res.status(500).json({ error: "Database error" });
+  }
+});
 
 async function start() {
   try {
     await initGeoIP();
-    console.log("[GeoIP] Ready");
+    console.log("[GeoIP] Base chargée");
+
+    const test = await pool.query("SELECT 1");
+    console.log("DB OK", test.rows);
 
     app.listen(3000, () => {
       console.log("Backend API running on port 3000");
