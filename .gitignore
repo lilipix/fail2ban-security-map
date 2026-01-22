@@ -10,4 +10,5 @@ geoip.env
 geoip-data/
 *.mmdb
 .geoipupdate.lock
+secret.yml
 

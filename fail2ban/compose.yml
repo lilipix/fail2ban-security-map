@@ -53,14 +53,14 @@ services:
     networks:
       - private
 
-  geoip:
-    image: maxmindinc/geoipupdate
-    container_name: geoip
-    env_file:
-      - ./geoip.env
-    volumes:
-      - ./geoip-data:/usr/share/GeoIP
-    restart: unless-stopped
+  # geoip:
+  #   image: maxmindinc/geoipupdate
+  #   container_name: geoip
+  #   env_file:
+  #     - ./geoip.env
+  #   volumes:
+  #     - ./geoip-data:/usr/share/GeoIP
+  #   restart: unless-stopped
 
 volumes:
   pg_data:
