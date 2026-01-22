@@ -3,6 +3,20 @@ fail2ban.localhost {
 }
 
 api.fail2ban.localhost {
+
+  @options {
+          method OPTIONS
+      }
+
+    respond @options 204
+
+  header {
+    Access-Control-Allow-Origin https://fail2ban.localhost
+    Access-Control-Allow-Methods GET,POST,OPTIONS
+    Access-Control-Allow-Headers Content-Type
+    Vary Origin
+  }
+
   reverse_proxy backend:3000
 }
 
