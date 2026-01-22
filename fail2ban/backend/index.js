@@ -1,6 +1,6 @@
 import express from "express";
 import pkg from "pg";
-import { syncFail2ban } from "./fail2banSync.js";
+import syncFromFile from "./fail2banSync.js";
 
 import { initGeoIP, lookupIp } from "./geoip.js";
 
@@ -32,16 +32,22 @@ app.get("/bans", async (req, res) => {
     const result = rows
       .map((ban) => {
         const ip = String(ban.ip);
-        const geo = lookupIp(ip);
-        if (!geo?.location) return null;
 
-        return {
-          ip: ban.ip,
-          jail: ban.jail,
-          date: ban.banned_at,
-          lat: geo.location.latitude,
-          lon: geo.location.longitude,
-        };
+        try {
+          const geo = lookupIp(ip);
+          if (!geo || !geo.location) return null;
+
+          return {
+            ip: ban.ip,
+            jail: ban.jail,
+            date: ban.banned_at,
+            lat: geo.location.latitude,
+            lon: geo.location.longitude,
+          };
+        } catch (err) {
+          // IP non trouvée dans GeoIP → normal
+          return null;
+        }
       })
       .filter(Boolean);
 
@@ -60,7 +66,7 @@ async function start() {
     const test = await pool.query("SELECT 1");
     console.log("DB OK", test.rows);
 
-    setInterval(() => syncFail2ban(pool), 10000);
+    setInterval(() => syncFromFile(pool), 10000);
 
     app.listen(3000, () => {
       console.log("Backend API running on port 3000");

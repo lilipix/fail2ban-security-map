@@ -1,41 +1,34 @@
-import { exec } from "child_process";
+import fs from "fs";
 
-/**
- * Synchronise les IP bannies Fail2ban -> BDD
- */
-export function syncFail2ban(pool) {
-  exec(
-    "docker exec fail2ban-config fail2ban fail2ban-client status sshd",
-    async (err, stdout) => {
-      if (err) {
-        console.error("[Fail2ban] error:", err.message);
-        return;
-      }
+export default function syncFromFile(pool) {
+  const file = "/shared/bans.log";
 
-      const match = stdout.match(/Banned IP list:\s*(.*)/);
-      if (!match) return;
+  if (!fs.existsSync(file)) {
+    return; // le fichier n'existe pas encore → normal
+  }
 
-      const ips = match[1]
-        .split(" ")
-        .map((ip) => ip.trim())
-        .filter(Boolean);
+  let content;
+  try {
+    content = fs.readFileSync(file, "utf-8");
+  } catch (err) {
+    console.error("[Fail2ban] read error:", err.message);
+    return;
+  }
 
-      for (const ip of ips) {
-        try {
-          await pool.query(
-            `
-          INSERT INTO bans (ip, jail)
-          VALUES ($1, 'sshd')
-          ON CONFLICT (ip, jail) DO NOTHING
-          `,
-            [ip],
-          );
-        } catch (e) {
-          console.error("[DB] insert error:", e.message);
-        }
-      }
+  const lines = content.split("\n").filter(Boolean);
 
-      console.log(">>> synced bans:", ips.length);
-    },
-  );
+  for (const line of lines) {
+    if (line.startsWith("UNBAN")) continue;
+
+    const [ip, jail] = line.split(" ");
+
+    pool.query(
+      `
+      INSERT INTO bans (ip, jail)
+      VALUES ($1, $2)
+      ON CONFLICT (ip, jail) DO NOTHING
+      `,
+      [ip, jail],
+    );
+  }
 }

@@ -15,6 +15,7 @@ services:
 
   backend:
     container_name: backend
+    user: "1000:1000"
     build: ./backend
     env_file:
       - .env
@@ -26,7 +27,6 @@ services:
     networks:
       - default
       - private
-    user: "1000:1000"
 
   log-generator:
     build: ./log-generator
