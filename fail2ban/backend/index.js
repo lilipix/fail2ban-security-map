@@ -1,29 +1,12 @@
 import express from "express";
 import pkg from "pg";
+import { syncFail2ban } from "./fail2banSync.js";
 
 import { initGeoIP, lookupIp } from "./geoip.js";
 
 const { Pool } = pkg;
 
 const app = express();
-// app.set("trust proxy", true);
-
-// app.use(
-//   cors({
-//     origin: (origin, callback) => {
-//       if (!origin) return callback(null, true);
-
-//       const allowedOrigins = ["https://fail2ban.localhost"];
-
-//       if (allowedOrigins.includes(origin)) {
-//         callback(null, true);
-//       } else {
-//         callback(new Error("Not allowed by CORS"));
-//       }
-//     },
-//     credentials: false,
-//   }),
-// );
 
 app.use(express.json());
 
@@ -76,6 +59,8 @@ async function start() {
 
     const test = await pool.query("SELECT 1");
     console.log("DB OK", test.rows);
+
+    setInterval(() => syncFail2ban(pool), 10000);
 
     app.listen(3000, () => {
       console.log("Backend API running on port 3000");

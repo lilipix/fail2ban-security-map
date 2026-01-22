@@ -1,8 +1,0 @@
-[api-login]
-enabled = true
-filter = api-login
-logpath = /config/logs/app.log
-backend = auto
-maxretry = 3
-findtime = 60
-bantime = 300

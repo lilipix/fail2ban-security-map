@@ -1,5 +1,0 @@
-[Definition]
-loglevel = INFO
-logtarget = /config/logs/auth.log
-dbfile = /config/fail2ban.sqlite3
-dbpurgeage = 1d

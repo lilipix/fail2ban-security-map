@@ -22,6 +22,7 @@ services:
       - postgres
     volumes:
       - ./geoip-data:/usr/share/GeoIP:ro
+      - ./shared:/shared
     networks:
       - default
       - private
@@ -47,6 +48,7 @@ services:
     volumes:
       - ./fail2ban-config:/config
       - ./logs:/config/logs
+      - ./shared:/shared
     restart: unless-stopped
     networks:
       - private
