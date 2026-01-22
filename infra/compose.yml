@@ -8,6 +8,7 @@ services:
       - ./data/caddy-public/config:/config
     networks:
       - public
+      - private
     restart: unless-stopped
 
   caddy-private:

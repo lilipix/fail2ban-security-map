@@ -1,12 +1,30 @@
 import express from "express";
 import pkg from "pg";
-import cors from "cors";
+
 import { initGeoIP, lookupIp } from "./geoip.js";
 
 const { Pool } = pkg;
 
 const app = express();
-app.use(cors());
+// app.set("trust proxy", true);
+
+// app.use(
+//   cors({
+//     origin: (origin, callback) => {
+//       if (!origin) return callback(null, true);
+
+//       const allowedOrigins = ["https://fail2ban.localhost"];
+
+//       if (allowedOrigins.includes(origin)) {
+//         callback(null, true);
+//       } else {
+//         callback(new Error("Not allowed by CORS"));
+//       }
+//     },
+//     credentials: false,
+//   }),
+// );
+
 app.use(express.json());
 
 const pool = new Pool({
@@ -17,18 +35,7 @@ const pool = new Pool({
   port: 5432,
 });
 
-// Routes
-app.get("/geoip-test", (req, res) => {
-  const result = lookupIp("8.8.8.8");
-  res.json({
-    country: result?.country?.isoCode,
-    lat: result?.location?.latitude,
-    lon: result?.location?.longitude,
-  });
-});
-
 app.get("/bans", async (req, res) => {
-  console.log(">>> /bans HIT");
   try {
     const { rows } = await pool.query(`
       SELECT ip, jail, banned_at
