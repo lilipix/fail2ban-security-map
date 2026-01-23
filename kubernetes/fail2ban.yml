@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: fail2ban
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: fail2ban
+  template:
+    metadata:
+      labels:
+        app: fail2ban
+    spec:
+      containers:
+        - name: fail2ban
+          image: linuxserver/fail2ban:1.1.0
+          volumeMounts:
+            - name: shared-storage
+              mountPath: /shared
+            - name: logs-storage
+              mountPath: /logs
+            - name: fail2ban-config
+              mountPath: /etc/fail2ban/jail.local
+              subPath: jail.local
+      volumes:
+        - name: shared-storage
+          persistentVolumeClaim:
+            claimName: shared-pvc
+        - name: logs-storage
+          persistentVolumeClaim:
+            claimName: logs-pvc
+        - name: fail2ban-config
+          configMap:
+            name: fail2ban-config

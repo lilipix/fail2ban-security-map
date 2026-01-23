@@ -10,17 +10,6 @@ spec:
     - port: 3000
       targetPort: 3000
 ---
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: backend-pvc
-spec:
-  accessModes:
-    - ReadWriteOnce
-  resources:
-    requests:
-      storage: 5Gi
----
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -62,5 +51,5 @@ spec:
                   key: POSTGRES_PASSWORD
       volumes:
         - name: shared-storage
-      persistentVolumeClaim:
-      claimName: shared-pvc
+          persistentVolumeClaim:
+            claimName: shared-pvc
