@@ -1,0 +1,25 @@
+fail2ban.localhost {
+  reverse_proxy frontend:80
+}
+
+api.fail2ban.localhost {
+
+  @options method OPTIONS
+  handle @options {
+    header {
+      Access-Control-Allow-Origin https://fail2ban.localhost
+      Access-Control-Allow-Methods GET,POST,OPTIONS
+      Access-Control-Allow-Headers Content-Type
+      Access-Control-Allow-Credentials true
+    }
+    respond 204
+  }
+
+  header {
+    Access-Control-Allow-Origin https://fail2ban.localhost
+    Access-Control-Allow-Credentials true
+    Vary Origin
+  }
+
+  reverse_proxy backend:3000
+}
