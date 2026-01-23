@@ -21,8 +21,7 @@ spec:
             - name: logs-storage
               mountPath: /logs
             - name: fail2ban-config
-              mountPath: /etc/fail2ban/jail.local
-              subPath: jail.local
+              mountPath: /config/fail2ban
       volumes:
         - name: shared-storage
           persistentVolumeClaim:
