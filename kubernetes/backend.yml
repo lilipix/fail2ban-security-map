@@ -41,6 +41,9 @@ spec:
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 3000
+          volumeMounts:
+            - name: shared-storage
+              mountPath: /shared
           env:
             - name: POSTGRES_DB
               valueFrom:
@@ -57,3 +60,7 @@ spec:
                 secretKeyRef:
                   name: secret
                   key: POSTGRES_PASSWORD
+      volumes:
+        - name: shared-storage
+      persistentVolumeClaim:
+      claimName: shared-pvc
