@@ -4,7 +4,7 @@ export default function syncFromFile(pool) {
   const file = "/shared/bans.log";
 
   if (!fs.existsSync(file)) {
-    return; // le fichier n'existe pas encore → normal
+    return;
   }
 
   let content;
