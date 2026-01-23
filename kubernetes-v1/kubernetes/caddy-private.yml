@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: caddy-private
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: caddy-private
+  template:
+    metadata:
+      labels:
+        app: caddy-private
+    spec:
+      containers:
+        - name: caddy
+          image: caddy:2.10
+          ports:
+            - containerPort: 80
+          volumeMounts:
+            - name: caddy-config
+              mountPath: /etc/caddy/Caddyfile
+              subPath: Caddyfile
+      volumes:
+        - name: caddy-config
+          configMap:
+            name: caddy-private-config
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: caddy-private
+spec:
+  selector:
+    app: caddy-private
+  ports:
+    - port: 80
+      targetPort: 80

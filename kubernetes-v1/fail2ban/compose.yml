@@ -1,0 +1,74 @@
+services:
+  frontend:
+    container_name: frontend
+    build: ./frontend
+    networks:
+      - private
+
+  postgres:
+    image: postgres:15
+    env_file:
+      - .env
+    volumes:
+      - pg_data:/var/lib/postgresql/data
+    networks:
+      - private
+
+  backend:
+    container_name: backend
+    user: "1000:1000"
+    build: ./backend
+    env_file:
+      - .env
+    depends_on:
+      - postgres
+    volumes:
+      - ./geoip-data:/usr/share/GeoIP:ro
+      - ./shared:/shared
+    networks:
+      - default
+      - private
+
+  log-generator:
+    build: ./log-generator
+    volumes:
+      - ./logs:/logs
+    networks:
+      - private
+
+  fail2ban:
+    image: linuxserver/fail2ban:1.1.0
+    container_name: fail2ban
+    cap_add:
+      - NET_ADMIN
+      - NET_RAW
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Europe/Paris
+    volumes:
+      - ./fail2ban-config:/config
+      - ./logs:/config/logs
+      - ./shared:/shared
+    restart: unless-stopped
+    networks:
+      - private
+
+  # geoip:
+  #   image: maxmindinc/geoipupdate
+  #   container_name: geoip
+  #   env_file:
+  #     - ./geoip.env
+  #   volumes:
+  #     - ./geoip-data:/usr/share/GeoIP
+  #   restart: unless-stopped
+
+volumes:
+  pg_data:
+
+networks:
+  public:
+    external: true
+  private:
+    external: true
+    name: infra_private
