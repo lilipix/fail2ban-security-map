@@ -51,8 +51,7 @@ while True:
 
     try:
         r = requests.post(BACKEND_URL, json=payload, timeout=1)
-        print(datetime.now(), region, ip, r.status_code)
     except Exception as e:
         print("Error:", e)
 
-    time.sleep(1)
+    time.sleep(2)

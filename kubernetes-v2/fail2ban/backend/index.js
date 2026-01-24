@@ -92,6 +92,18 @@ async function start() {
     console.log("[GeoIP] Base chargée");
     await pool.query("SELECT 1");
 
+    setInterval(async () => {
+      try {
+        await pool.query(`
+      DELETE FROM bans
+      WHERE banned_at < NOW() - INTERVAL '2 minutes'
+    `);
+        console.log("[CLEANUP] anciens bans supprimés");
+      } catch (err) {
+        console.error("[CLEANUP] error:", err);
+      }
+    }, 60_000);
+
     app.listen(3000, () => {
       console.log("Backend API running on port 3000");
     });

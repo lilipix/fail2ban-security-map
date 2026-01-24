@@ -23,7 +23,6 @@ services:
     depends_on:
       - postgres
     volumes:
-      - ./geoip-data:/usr/share/GeoIP:ro
       - ./shared:/shared
     networks:
       - default
@@ -53,15 +52,6 @@ services:
     restart: unless-stopped
     networks:
       - private
-
-  # geoip:
-  #   image: maxmindinc/geoipupdate
-  #   container_name: geoip
-  #   env_file:
-  #     - ./geoip.env
-  #   volumes:
-  #     - ./geoip-data:/usr/share/GeoIP
-  #   restart: unless-stopped
 
 volumes:
   pg_data:

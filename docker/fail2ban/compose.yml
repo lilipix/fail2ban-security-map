@@ -61,6 +61,8 @@ services:
     volumes:
       - ./geoip-data:/usr/share/GeoIP
     restart: unless-stopped
+    networks:
+      - private
 
 volumes:
   pg_data:

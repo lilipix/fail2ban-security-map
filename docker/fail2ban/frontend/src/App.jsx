@@ -11,7 +11,7 @@ function App() {
 
   return (
     <>
-      <div>
+      <div className="app">
         <h1>Fail2Ban Security App</h1>
         <MapView bans={bans} />
       </div>

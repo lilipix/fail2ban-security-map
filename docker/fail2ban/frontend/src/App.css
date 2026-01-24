@@ -1,11 +1,13 @@
-#root {
-  margin: 0 auto;
-  padding: 2rem;
-  text-align: center;
+.app {
+  min-height: 100vh;
   background-color: black;
-  overflow: hidden;
+  color: white;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 h1 {
-  color: white;
+  margin: 1rem;
 }
