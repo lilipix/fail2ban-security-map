@@ -29,39 +29,12 @@ services:
       - default
       - private
 
-  log-generator:
-    build: ./log-generator
-    volumes:
-      - ./logs:/logs
-    networks:
-      - private
-
-  fail2ban:
-    image: linuxserver/fail2ban:1.1.0
-    container_name: fail2ban
-    cap_add:
-      - NET_ADMIN
-      - NET_RAW
-    environment:
-      - PUID=1000
-      - PGID=1000
-      - TZ=Europe/Paris
-    volumes:
-      - ./fail2ban-config:/config
-      - ./logs:/config/logs
-      - ./shared:/shared
-    restart: unless-stopped
-    networks:
-      - private
-
-  # geoip:
-  #   image: maxmindinc/geoipupdate
-  #   container_name: geoip
-  #   env_file:
-  #     - ./geoip.env
+  # log-generator:
+  #   build: ./log-generator
   #   volumes:
-  #     - ./geoip-data:/usr/share/GeoIP
-  #   restart: unless-stopped
+  #     - ./logs:/logs
+  #   networks:
+  #     - private
 
 volumes:
   pg_data:
