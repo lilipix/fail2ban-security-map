@@ -6,20 +6,36 @@ export default function useBans() {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    fetch(`${import.meta.env.VITE_API_URL}/bans`)
-      .then((res) => {
-        if (!res.ok) throw new Error("API error");
-        return res.json();
-      })
-      .then((data) => {
-        setBans(data);
-        setLoading(false);
-      })
-      .catch((err) => {
-        console.error(err);
-        setError(err);
-        setLoading(false);
-      });
+    let isMounted = true;
+    const fetchBans = () => {
+      fetch(`${import.meta.env.VITE_API_URL}/bans`)
+        .then((res) => {
+          if (!res.ok) throw new Error("API error");
+          return res.json();
+        })
+        .then((data) => {
+          if (isMounted) {
+            setBans(data);
+            setLoading(false);
+          }
+        })
+        .catch((err) => {
+          console.error(err);
+          if (isMounted) {
+            setError(err);
+            setLoading(false);
+          }
+        });
+    };
+
+    fetchBans();
+
+    const interval = setInterval(fetchBans, 2000);
+
+    return () => {
+      isMounted = false;
+      clearInterval(interval);
+    };
   }, []);
 
   return { bans, loading, error };

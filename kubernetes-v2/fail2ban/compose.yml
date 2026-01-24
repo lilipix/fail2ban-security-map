@@ -22,19 +22,16 @@ services:
       - .env
     depends_on:
       - postgres
-    volumes:
-      - ./geoip-data:/usr/share/GeoIP:ro
-      - ./shared:/shared
     networks:
       - default
       - private
 
-  # log-generator:
-  #   build: ./log-generator
-  #   volumes:
-  #     - ./logs:/logs
-  #   networks:
-  #     - private
+  log-generator:
+    build: ./log-generator
+    volumes:
+      - ./logs:/logs
+    networks:
+      - private
 
 volumes:
   pg_data:
