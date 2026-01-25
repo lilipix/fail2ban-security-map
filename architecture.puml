@@ -1,0 +1,41 @@
+@startuml
+!theme plain
+
+skinparam componentStyle rectangle
+skinparam wrapWidth 200
+skinparam shadowing false
+
+title Fail2ban Security Map – Architecture DevOps
+
+actor User #LightBlue
+
+cloud "Internet" {
+  component "Cloudflare\nTunnel" as cloudflared #ADD8E6
+}
+
+node "Reverse Proxy" #E8F5E9 {
+  component "Caddy Public" as caddy_public #81C784
+  component "Caddy Private" as caddy_private #66BB6A
+}
+
+node "Application Stack (Docker / Kubernetes)" #FFFDE7 {
+
+  component "Frontend\n(Map UI)" as frontend #FFD54F
+  component "Backend API\n(Node.js / Express)" as backend #FFCA28
+
+  database "PostgreSQL\n(bans)" as db #CE93D8
+
+  component "Fail2ban" as fail2ban #EF9A9A
+}
+
+User --> cloudflared : HTTPS
+cloudflared --> caddy_public : Tunnel sécurisé
+caddy_public --> caddy_private : Reverse proxy
+
+caddy_private --> frontend : HTTP
+caddy_private --> backend : HTTP
+
+backend --> db : SQL
+fail2ban --> backend : Sync IP bannies
+backend --> frontend : JSON (bans + geoIP)
+@enduml

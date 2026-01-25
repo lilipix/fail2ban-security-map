@@ -14,7 +14,6 @@ services:
       - private
 
   backend:
-    container_name: backend
     user: "1000:1000"
     build: ./backend
     env_file:
@@ -37,7 +36,6 @@ services:
 
   fail2ban:
     image: linuxserver/fail2ban:1.1.0
-    container_name: fail2ban-config
     cap_add:
       - NET_ADMIN
       - NET_RAW
@@ -55,7 +53,6 @@ services:
 
   geoip:
     image: maxmindinc/geoipupdate
-    container_name: geoip
     env_file:
       - ./geoip.env
     volumes:
