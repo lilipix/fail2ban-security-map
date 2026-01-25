@@ -44,7 +44,7 @@ app.post("/events", async (req, res) => {
 
     return res.json({ banned: true });
   } catch (error) {
-    console.error("Insert ban error", err);
+    console.error("Insert ban error", error);
     res.status(500).json({ error: "DB error" });
   }
 });
