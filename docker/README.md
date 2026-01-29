@@ -1,14 +1,9 @@
-# Fail2ban Security Map
+# Fail2ban Security Map - Version Docker Compose – Stack fonctionnelle
 
-> - **DEMURE Aurélie**
+Cette version du projet repose sur **Docker Compose** et constitue la version **fonctionnelle de référence.**
+Elle intègre un **Fail2ban réel**, un backend API, un frontend web et une base de données PostgreSQL, exposés de manière sécurisée via **Caddy** et **Cloudflare Tunnel.**
 
----
-
-## 1. Présentation du Projet
-
-Ce projet a pour objectif de visualiser sur une carte les adresses IP bannies par Fail2ban à partir de logs simulés.
-
-### Description des services
+## 1. Description des services
 
 | Service           | Image Docker                 | Rôle                        | Port Interne |
 | :---------------- | :--------------------------- | :-------------------------- | :----------- |
@@ -21,6 +16,14 @@ Ce projet a pour objectif de visualiser sur une carte les adresses IP bannies pa
 | **Fail2ban**      | `linuxserver/fail2ban:1.1.0` | Détection & bannissement IP | N/A          |
 | **DB**            | `postgres:15`                | Stockage des bannissements  | 5432         |
 | **Tunnel**        | `cloudflare/cloudflared`     | Exposition Internet         | N/A          |
+
+## 2. Prérequis
+
+- Docker
+- Docker Compose
+- Taskfile
+
+---
 
 ## Outils et automatisation
 

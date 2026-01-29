@@ -19,7 +19,7 @@ export default function MapView({ bans }) {
     >
       <TileLayer
         attribution="© OpenStreetMap"
-        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+        url="https://tile.openstreetmap.org/{z}/{x}/{y}.png"
         noWrap={true}
       />
 

@@ -1,129 +1,80 @@
-# import time
-# import random
-# from datetime import datetime
-# import os
-
-# IP_CLUSTERS = {
-#     "europe_west": [
-#         "185.220.101.45",
-#         "185.220.101.46",
-#         "185.220.101.47"
-#     ],
-#     "russia": [
-#         "5.188.10.20",
-#         "5.188.10.21"
-#     ],
-#     "tor_exit_nodes": [
-#         "185.220.101.50",
-#         "185.220.101.51"
-#     ],
-#     "asia_east": [
-#         "203.0.113.5",
-#         "203.0.113.6"
-#     ]
-# }
-
-# users = ["root", "admin", "test", "guest"]
-# ports = [22]
-
-# LOG_DIR = "/logs"
-# LOG_FILE = f"{LOG_DIR}/app.log"
-
-# if not os.path.exists(LOG_DIR):
-#     raise RuntimeError("/logs n'existe pas dans le conteneur")
-
-# print("🚨 Log generator started (burst mode)")
-
-# while True:
-#     # Choisir une zone + une IP
-#     cluster = random.choice(list(IP_CLUSTERS.keys()))
-#     ip = random.choice(IP_CLUSTERS[cluster])
-
-#     # Nombre de tentatives consécutives (BURST)
-#     attempts = random.randint(4, 8)
-
-#     for _ in range(attempts):
-#         user = random.choice(users)
-
-#         line = (
-#             f"{datetime.now().strftime('%b %d %H:%M:%S')} "
-#             f"server sshd[1234]: "
-#             f"Failed password for invalid user {user} "
-#             f"from {ip} port 22 ssh2\n"
-#         )
-
-#         with open(LOG_FILE, "a") as f:
-#             f.write(line)
-
-#         print(line.strip())
-#         time.sleep(0.5)
-
-#     # Pause avant une nouvelle IP
-#     time.sleep(5)
-
 import time
 import random
 from datetime import datetime
 import os
+import ipaddress
 
-# IP publiques RÉELLES et géolocalisables
-IP_CLUSTERS = {
-    "google_us": [
-        "8.8.8.8",
-        "8.34.12.45",
-        "8.35.201.9"
+# Plages IP publiques géolocalisables
+IP_RANGES = {
+    "north_america": [
+        ("3.0.0.0", "3.255.255.255"),
+        ("8.0.0.0", "8.255.255.255"),
     ],
-    "cloudflare_us": [
-        "1.1.1.1",
-        "1.0.0.1"
+    "europe": [
+        ("18.184.0.0", "18.194.255.255"),
+        ("51.0.0.0", "51.255.255.255"),
     ],
-    "ovh_fr": [
-        "51.38.22.10",
-        "51.38.22.11"
+    "asia": [
+        ("13.112.0.0", "13.115.255.255"),
+        ("43.224.0.0", "43.255.255.255"),
     ],
-    "aws_eu": [
-        "18.202.216.48",
-        "18.200.10.33"
+    "south_america": [
+        ("200.128.0.0", "200.191.255.255"),
     ],
-    "digitalocean_eu": [
-        "64.225.92.45",
-        "64.225.92.46"
-    ]
+    "africa": [
+        ("102.0.0.0", "102.255.255.255"),
+    ],
 }
 
-users = ["root", "admin", "test", "guest"]
+USERS = ["root", "admin", "test", "guest"]
 LOG_DIR = "/logs"
 LOG_FILE = f"{LOG_DIR}/app.log"
 
 if not os.path.exists(LOG_DIR):
-    raise RuntimeError("/logs n'existe pas")
+    raise RuntimeError("/config/logs n'existe pas")
 
-print("🚨 Log generator started (REAL IP MODE)")
+def random_ip_from_range(start, end):
+    return str(
+        ipaddress.IPv4Address(
+            random.randint(
+                int(ipaddress.IPv4Address(start)),
+                int(ipaddress.IPv4Address(end))
+            )
+        )
+    )
+
+print("🌍 Fail2Ban world attack simulator started")
 
 while True:
-    # Choisir une zone et une IP
-    cluster = random.choice(list(IP_CLUSTERS.keys()))
-    ip = random.choice(IP_CLUSTERS[cluster])
+    # 1️⃣ Nombre d'IP attaquées en parallèle
+    ip_count = random.randint(5, 10)
 
-    # BURST d’attaques → déclenche un ban
-    attempts = random.randint(4, 7)
+    ips = set()
+    while len(ips) < ip_count:
+        region = random.choice(list(IP_RANGES.keys()))
+        ip_range = random.choice(IP_RANGES[region])
+        ips.add(random_ip_from_range(*ip_range))
 
-    for _ in range(attempts):
-        user = random.choice(users)
+    # 2️⃣ Pour chaque IP → burst d'attaques
+    for ip in ips:
+        attempts = random.randint(3, 5)  # doit >= maxretry
 
-        line = (
-            f"{datetime.now().strftime('%b %d %H:%M:%S')} "
-            f"server sshd[1234]: "
-            f"Failed password for invalid user {user} "
-            f"from {ip} port 22 ssh2\n"
-        )
+        for _ in range(attempts):
+            user = random.choice(USERS)
 
-        with open(LOG_FILE, "a") as f:
-            f.write(line)
+            line = (
+                f"{datetime.now().strftime('%b %d %H:%M:%S')} "
+                f"server sshd[1234]: "
+                f"Failed password for invalid user {user} "
+                f"from {ip} port 22 ssh2\n"
+            )
 
-        print(line.strip())
-        time.sleep(0.5)
+            with open(LOG_FILE, "a") as f:
+                f.write(line)
 
-    # Pause avant nouvelle IP
-    time.sleep(5)
+            print(line.strip())
+            time.sleep(0.3)
+
+    # 3️⃣ Pause avant le prochain "wave" d'attaques
+    time.sleep(8)
 

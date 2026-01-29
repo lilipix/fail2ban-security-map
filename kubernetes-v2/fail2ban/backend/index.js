@@ -2,6 +2,7 @@ import express from "express";
 import pkg from "pg";
 
 import { initGeoIP, lookupIp } from "./geoip.js";
+import initDb from "./initDb.js";
 
 const { Pool } = pkg;
 
@@ -14,7 +15,7 @@ const BAN_THRESHOLD = 1;
 
 const attempts = {};
 
-const pool = new Pool({
+export const pool = new Pool({
   host: "postgres",
   user: process.env.POSTGRES_USER,
   password: process.env.POSTGRES_PASSWORD,
@@ -90,7 +91,10 @@ async function start() {
   try {
     await initGeoIP();
     console.log("[GeoIP] Base chargée");
-    await pool.query("SELECT 1");
+    const test = await pool.query("SELECT 1");
+
+    await initDb();
+    console.log("DB OK", test.rows);
 
     setInterval(async () => {
       try {

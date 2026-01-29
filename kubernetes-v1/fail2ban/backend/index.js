@@ -3,6 +3,7 @@ import pkg from "pg";
 import syncFromFile from "./fail2banSync.js";
 
 import { initGeoIP, lookupIp } from "./geoip.js";
+import initDb from "./initDb.js";
 
 const { Pool } = pkg;
 
@@ -10,7 +11,7 @@ const app = express();
 
 app.use(express.json());
 
-const pool = new Pool({
+export const pool = new Pool({
   host: "postgres",
   user: process.env.POSTGRES_USER,
   password: process.env.POSTGRES_PASSWORD,
@@ -64,6 +65,7 @@ async function start() {
     console.log("[GeoIP] Base chargée");
 
     const test = await pool.query("SELECT 1");
+    await initDb();
     console.log("DB OK", test.rows);
 
     setInterval(() => syncFromFile(pool), 10000);

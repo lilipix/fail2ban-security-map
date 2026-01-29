@@ -1,34 +1,85 @@
+// import fs from "fs";
+
+// export default function syncFromFile(pool) {
+//   const file = "/shared/bans.log";
+
+//   if (!fs.existsSync(file)) {
+//     return;
+//   }
+
+//   let content;
+//   try {
+//     content = fs.readFileSync(file, "utf-8");
+//   } catch (err) {
+//     console.error("[Fail2ban] read error:", err.message);
+//     return;
+//   }
+
+//   const lines = content.split("\n").filter(Boolean);
+//   console.log("Lines", lines);
+
+//   for (const line of lines) {
+//     if (line.startsWith("UNBAN")) continue;
+
+//     const [ip, jail] = line.split(" ");
+
+//     pool.query(
+//       `
+//       INSERT INTO bans (ip, jail)
+//       VALUES ($1, $2)
+//       ON CONFLICT (ip, jail) DO NOTHING
+//       `,
+//       [ip, jail],
+//     );
+//   }
+// }
+
 import fs from "fs";
 
-export default function syncFromFile(pool) {
+export default async function syncFromFile(pool) {
   const file = "/shared/bans.log";
 
-  if (!fs.existsSync(file)) {
-    return; // le fichier n'existe pas encore → normal
-  }
+  if (!fs.existsSync(file)) return;
 
   let content;
   try {
     content = fs.readFileSync(file, "utf-8");
   } catch (err) {
-    console.error("[Fail2ban] read error:", err.message);
+    console.error("[Fail2Ban] read error:", err.message);
     return;
   }
 
   const lines = content.split("\n").filter(Boolean);
 
   for (const line of lines) {
-    if (line.startsWith("UNBAN")) continue;
+    const parts = line.split(" ");
+    const type = parts[0];
+    const ip = parts[1];
+    const jail = parts[2];
 
-    const [ip, jail] = line.split(" ");
+    if (!ip || !jail) continue;
 
-    pool.query(
-      `
-      INSERT INTO bans (ip, jail)
-      VALUES ($1, $2)
-      ON CONFLICT (ip, jail) DO NOTHING
-      `,
-      [ip, jail],
-    );
+    if (type === "BAN") {
+      await pool.query(
+        `
+        INSERT INTO bans (ip, jail)
+        VALUES ($1, $2)
+        ON CONFLICT (ip, jail) DO NOTHING
+        `,
+        [ip, jail],
+      );
+    }
+
+    if (type === "UNBAN") {
+      await pool.query(
+        `
+        DELETE FROM bans
+        WHERE ip = $1 AND jail = $2
+        `,
+        [ip, jail],
+      );
+    }
   }
+
+  fs.writeFileSync(file, "");
 }

@@ -4,7 +4,6 @@ import MapView from "./components/MapView";
 
 function App() {
   const { bans, loading, error } = useBans();
-  console.log("bans", bans);
 
   if (loading) return <p>Chargement des données…</p>;
   if (error) return <p>Erreur de chargement</p>;
