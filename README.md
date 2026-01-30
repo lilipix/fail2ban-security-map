@@ -6,13 +6,15 @@
 
 ## 1. Présentation du Projet
 
-**Fail2ban Security Map** a pour objectif de **collecter, analyser et visualiser des adresses IP bannies par Fail2ban** sur une heat map géographique interactive.
-
-Le projet s'inscrit dans une démarche :
+Ce projet s'inscrit dans une démarche :
 
 - de **conteneurisation** (Docker),
 - d'**orchestration** (Kubernetes),
 - et de **mise à disposition sécurisée** via Cloudflare Zero Trust.
+
+Pour ce projet **Fail2ban Security Map**, j'ai choisi de travailler avec Fail2ban, un outil utilisé pour détecter des tentatives d’attaque (par exemple des connexions SSH échouées) et bannir les adresses IP malveillantes. Le projet a pour objectif de **collecter et analyser en direct des adresses IP bannies**, puis de les **visualiser via une interface web** sur une heat map géographique interactive.
+
+Pour observer le fonctionnement réel de Fail2ban, il est recommandé de consulter la version du projet située dans le dossier `/docker`.
 
 **Fonctionnalités principales :**
 

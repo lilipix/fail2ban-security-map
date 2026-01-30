@@ -19,6 +19,10 @@ export const pool = new Pool({
   port: 5432,
 });
 
+app.get("/health", (req, res) => {
+  res.status(200).send("OK");
+});
+
 app.get("/bans", async (req, res) => {
   try {
     const { rows } = await pool.query(`
