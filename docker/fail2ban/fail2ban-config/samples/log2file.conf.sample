@@ -1,0 +1,3 @@
+[Definition]
+actionban = echo "BAN <ip> <name> $(date +%%s)" >> /shared/bans.log
+actionunban = echo "UNBAN <ip> <name> $(date +%%s)" >> /shared/bans.log

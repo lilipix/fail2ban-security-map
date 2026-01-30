@@ -1,0 +1,7 @@
+[sshd]
+enabled = true
+logpath = /config/logs/app.log
+action = log2file
+maxretry = 3
+findtime = 60
+bantime = 600

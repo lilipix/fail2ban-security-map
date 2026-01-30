@@ -37,6 +37,17 @@ Elle intègre un **Fail2ban réel**, un backend API, un frontend web et une base
     cd fail2ban-security-map
     ```
 
+2.  Configuration Fail2ban (fichiers non versionnés) :
+
+Pour des raisons de lisibilité et de volume, le dossier `fail2ban-config/` n’est pas versionné.
+
+Des fichiers d’exemple sont fournis dans le dossier `fail2ban/samples/` :
+
+- `jail.local.sample` → à copier vers `fail2ban/fail2ban-config/fail2ban/jail.local`
+- `log2file.conf.sample` → à copier vers `fail2ban/fail2ban-config/fail2ban/action.d/log2file.conf`
+
+Ces fichiers décrivent la configuration Fail2ban utilisée pour la démonstration (jail personnalisée et action d’écriture dans un volume partagé).
+
 2.  Lancer la stack :
 
     ```bash
