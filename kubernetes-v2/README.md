@@ -166,9 +166,11 @@ kubectl logs <nom-pod-cloudflare>
 
 ![cloudflare](images/cloudflare.png)
 
+![cloudflare-zoom](images/cloudflare2.png)
+
 ---
 
-## 7. Différences avec la version Docker
+## 7. Différences avec la version 1
 
 | Kubernetes V1                            | Kubernetes V2                         |
 | ---------------------------------------- | ------------------------------------- |
