@@ -60,7 +60,7 @@ Ces fichiers décrivent la configuration Fail2ban utilisée pour la démonstrati
 
 3.  Accéder aux services en local :
 
-> Lors du premier démarrage, l’API doit être accessible pour que le reverse proxy puisse établir correctement les connexions HTTPS.
+> Lors du premier démarrage, l’API doit être accessible et montée sur le navigateur pour que le reverse proxy puisse établir correctement les connexions HTTPS.
 
     - API : `https://api.fail2ban.localhost/bans`
     - Frontend : `https://fail2ban.localhost`

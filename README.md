@@ -31,9 +31,9 @@ Pour ce projet j'ai choisi de travailler avec Fail2ban, un outil utilisé pour d
 
 **Screenshot de l'application déployée :**
 
-![deploy-map](images/deploy-map.png)
+![deploy-map](images/cloudflare.png)
 
-![zoom-map](images/zoom.png)
+![zoom-map](images/cloudflare2.png)
 
 ---
 
