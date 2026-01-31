@@ -28,6 +28,8 @@ Pour observer le fonctionnement réel de Fail2ban, il est recommandé de consult
 
 ![deploy-map](images/deploy-map.png)
 
+![zoom-map](images/zoom.png)
+
 ---
 
 ## 2. Architecture Technique
@@ -104,4 +106,4 @@ Le projet a été réalisé de manière incrémentale :
 ## 6. Bilan du projet
 
 Ce projet m’a permis de découvrir le modèle de sécurité **Zero Trust** et la protection offerte par **Fail2ban**. J'ai envie d'aller plus loin sur ces sujets et je projette d'implémenter **Cloudflare** et **Fail2ban** sur mon propre serveur afin d'en améliorer la sécurité.
-Je connaissais déjà Docker mais ici je suis allée plus loin et kubernetes...
+Je connaissais déjà Docker et ce projet m'a permis m’a permis de mieux comprendre le fonctionnement de Kubernetes, en particulier le rôle des Pods, des Deployments et des Services, ainsi que la manière dont Kubernetes gère la scalabilité et la répartition des requêtes par rapport à une approche Docker Compose.

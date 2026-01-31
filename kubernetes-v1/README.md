@@ -116,7 +116,7 @@ kubectl get services
 
 ![ressources](images/ressources.png)
 
-![dashboard](images/dasboard.png)
+![dashboard](images/dashboard.png)
 
 ### Accès à l'application
 
