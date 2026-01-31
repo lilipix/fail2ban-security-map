@@ -160,8 +160,11 @@ kubectl get services
 ### Accès à l'application
 
 ```bash
-kubectl logs cloudflared
+
+kubectl logs <nom-pod-cloudflare>
 ```
+
+![cloudflare](images/cloudflare.png)
 
 ---
 
