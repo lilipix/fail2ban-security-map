@@ -69,9 +69,11 @@ Ces fichiers décrivent la configuration Fail2ban utilisée pour la démonstrati
 
 4.  Obtenir l'URL publique :
 
-    ```bash
-    docker compose logs cloudflared
-    ```
+        ```bash
+        docker compose logs cloudflared
+        ```
+
+    **Logs Cloudflare**
 
 ![Logs Cloudflare](images/cloudflare.png)
 
@@ -87,6 +89,8 @@ Le projet peut également être administré via **Dockge**, une interface web pe
 - visualiser l'état des services,
 - consulter les logs.
 
+### État des conteneurs
+
 ![Containers Docker en fonctionnement](images/docker-ps.png)
 
 ---
@@ -100,6 +104,8 @@ Fail2ban est configuré via une jail basée sur les filtres standards fournis pa
 
 Afin de communiquer avec le backend, Fail2ban écrit les logs dans un fichier texte shared/bans.log partagé avec le backend. Ce fichier est stocké dans un **volume Docker partagé.**
 Ce volume est monté dans le conteneur fail2ban en écriture et dans le conteneur backend en lecture.
+
+**Logs écrits par Fail2ban dans le fichier partagé**
 
 ![Exemple de logs](images/bans.png)
 
@@ -117,7 +123,9 @@ Ce volume est monté dans le conteneur fail2ban en écriture et dans le conteneu
   Certaines adresses IP générées par le script de simulation étaient invalides ou non géolocalisabes et faisaient échouer l'endpoint `/bans`. J'ai mis en place un mécanisme de gestion d’erreur (`try/catch`) afin qu’une IP défaillante n’empêche plus le traitement de l’ensemble de la requête.
 
 - **CORS**
-  Problèmes d'erreurs CORS lors des appels depuis le frontend vers l'API, les services n'étant pas exposés sur les mêmes ports, le navigateur bloquait systématiquement les requêtes malgré l'ajout des en-têtes CORS côté API Express. La gestion des CORS dans Caddy et dans l'API envoyait plusieurs valeurs pour Access-Control-Allow-Origin, ce qui est interdit par la spécification CORS. L'erreur a pu être solutionnée en centralisant la gestion des CORS dans le header du reverse proxy Caddy privé.
+  Problèmes d'erreurs CORS lors des appels depuis le frontend vers l'API, les services n'étant pas exposés sur les mêmes ports, le navigateur bloquait systématiquement les requêtes malgré l'ajout des en-têtes CORS côté API Express. La gestion des CORS dans Caddy et dans l'API envoyait plusieurs valeurs pour Access-Control-Allow-Origin, ce qui est interdit par la spécification CORS. J'ai solutionné le problème en centralisant la gestion des CORS dans le header du reverse proxy Caddy privé.
+
+  **Exemple d'erreur CORS**
 
   ![Exemple d'erreur CORS](images/cors.png)
 
@@ -131,6 +139,9 @@ Ce volume est monté dans le conteneur fail2ban en écriture et dans le conteneu
 
 - **Cloudflare**  
   Des erreurs 502 lors de connexion avec Cloudflare qui étaient liée à un blocage du côté de Cloudflare pour cause de trop nombreuses requêtes.
+
+- **Accumulation des données en base**
+  L'accumulation des adresses IP bannies entrainait une visualisation saturée et peu lisible. J'ai mis en place une purge automatique côté backend des entrées plus anciennes qu'une durée définie avec une exécution périodique via un setInterval.
 
 - **Débogage général**  
   D'autres difficultés ont été rencontrées (types SQL, erreurs de code, problèmes d’URL entre frontend et backend) résolues à l’aide des logs des conteneurs Docker, de `console.log`, et des outils de développement du navigateur.
