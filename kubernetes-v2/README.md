@@ -1,6 +1,6 @@
 # Fail2ban Security Map – Kubernetes V2
 
-Cette version correspond à une **évolution de la version Kubernetes V1**.  
+Cette version correspond à une **évolution de la version Kubernetes V1**. Elle peut servir de référence pour voir l'application déployée.
 Elle vise à proposer une architecture **plus cohérente avec les principes Kubernetes**, tout en restant adaptée à un contexte pédagogique.
 
 Contrairement à la version V1, cette itération met en évidence :

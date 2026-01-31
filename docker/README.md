@@ -1,7 +1,6 @@
 # Fail2ban Security Map - Version Docker Compose – Stack fonctionnelle
 
-Cette version du projet repose sur **Docker Compose** et constitue la version **fonctionnelle de référence.**
-Elle intègre un **Fail2ban réel**, un backend API, un frontend web et une base de données PostgreSQL, exposés de manière sécurisée via **Caddy** et **Cloudflare Tunnel.**
+Cette version du projet repose sur **Docker Compose**. Elle intègre un **Fail2ban réel**, un backend API, un frontend web et une base de données PostgreSQL, exposés de manière sécurisée via **Caddy** et **Cloudflare Tunnel.**
 
 ## 1. Description des services
 
