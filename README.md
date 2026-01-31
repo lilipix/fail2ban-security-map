@@ -1,5 +1,12 @@
 # Fail2ban Security Map
 
+![Docker](https://img.shields.io/badge/Docker-2496ED?logo=docker&logoColor=white)
+![Kubernetes](https://img.shields.io/badge/Kubernetes-326CE5?logo=kubernetes&logoColor=white)
+![Caddy](https://img.shields.io/badge/Caddy-1F88C0?logo=caddy&logoColor=white)
+![Node.js](https://img.shields.io/badge/Node.js-339933?logo=node.js&logoColor=white)
+![PostgreSQL](https://img.shields.io/badge/PostgreSQL-4169E1?logo=postgresql&logoColor=white)
+![MIT License](https://img.shields.io/badge/License-MIT-green.svg)
+
 > - **DEMURE Aurélie** Développeuse Full Stack /DevOps
 
 ---
@@ -105,3 +112,7 @@ Le projet a été réalisé de manière incrémentale :
 
 Ce projet m’a permis de découvrir le modèle de sécurité **Zero Trust** et la protection offerte par **Fail2ban**. J'ai envie d'aller plus loin sur ces sujets et je projette d'implémenter **Cloudflare** et **Fail2ban** sur mon propre serveur afin d'en améliorer la sécurité.
 Je connaissais déjà Docker et ce projet m'a permis m’a permis de mieux comprendre le fonctionnement de Kubernetes, en particulier le rôle des Pods, des Deployments et des Services, ainsi que la manière dont Kubernetes gère la scalabilité et la répartition des requêtes par rapport à une approche Docker Compose.
+
+## Licence
+
+Ce projet est distribué sous licence **MIT**.
