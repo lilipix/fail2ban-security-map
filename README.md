@@ -101,8 +101,9 @@ Le projet a été réalisé de manière incrémentale :
 **Outils utilisés :** ChatGPT
 
 - _Génération de code :_ J'ai utilisé ChatGPT notammement pour m'aider à générer le script générateur d'adresses IP.
-  - _Débuggage :_ ChatGPT m'a aidé à comprendre les différentes erreurs rencontrées lors du développement de l'application.
-  - _Documentation :_ ChatGPT m'a aidé à comprendre et aller plus loin sur les concepts et les technologies utilisées dans ce projet notamment afin de clarifier les rôles de chaque service (Cloudflare, zero trust, Caddy privé, Caddy public...)
+- _Débuggage :_ ChatGPT m'a aidé à comprendre les différentes erreurs rencontrées lors du développement de l'application.
+- _Documentation :_ ChatGPT m'a aidé à comprendre et aller plus loin sur les concepts et les technologies utilisées dans ce projet notamment afin de clarifier les rôles de chaque service (Cloudflare, zero trust, Caddy privé, Caddy public...)
+
 - **Apprentissage :**
   L'IA a servi de support dans l'analyse des différentes erreurs rencontrées tout au long du développement. J'ai beaucoup appris sur le fonctionnement de la communication inter-conteneurs, et j'ai pu m'approprier plus rapidement les différentes technologies utilisées.
 
@@ -111,7 +112,7 @@ Le projet a été réalisé de manière incrémentale :
 ## 6. Bilan du projet
 
 Ce projet m’a permis de découvrir le modèle de sécurité **Zero Trust** et la protection offerte par **Fail2ban**. J'ai envie d'aller plus loin sur ces sujets et je projette d'implémenter **Cloudflare** et **Fail2ban** sur mon propre serveur afin d'en améliorer la sécurité.
-Je connaissais déjà Docker et ce projet m'a permis m’a permis de mieux comprendre le fonctionnement de Kubernetes, en particulier le rôle des Pods, des Deployments et des Services, ainsi que la manière dont Kubernetes gère la scalabilité et la répartition des requêtes par rapport à une approche Docker Compose.
+Je connaissais déjà Docker et ce projet m'a permis de mieux comprendre le fonctionnement de Kubernetes, en particulier le rôle des Pods, des Deployments et des Services, ainsi que la manière dont Kubernetes gère la scalabilité et la répartition des requêtes par rapport à une approche Docker Compose.
 
 ## Licence
 
