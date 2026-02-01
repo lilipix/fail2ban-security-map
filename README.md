@@ -70,7 +70,7 @@ Ce dépôt contient **plusieurs versions du même projet**, correspondant à dif
 
 Ce README global ne décrit pas les commandes de lancement.
 
-Chaque version dispose de son propre README :
+Chaque version dispose de son propre README, décrivant les commandes de lancement ainsi que les spécificités techniques de chaque implémentation et les difficultés rencontrées :
 
 - [docker](docker/README.md)
 - [kubernetes-v1](kubernetes-v1/README.md)
@@ -94,7 +94,9 @@ Le projet a été réalisé de manière incrémentale :
 
 - développement du frontend,
 
-- sécurisation et exposition via proxy et tunnel.
+- sécurisation et exposition via proxy et tunnel,
+
+- mise en place de l'orchestration avec Kubernetes
 
 ### Utilisation de l'IA
 

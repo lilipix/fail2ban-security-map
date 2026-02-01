@@ -47,7 +47,7 @@ Des fichiers d’exemple sont fournis dans le dossier `fail2ban/samples/` :
 
 Ces fichiers décrivent la configuration Fail2ban utilisée pour la démonstration (jail personnalisée et action d’écriture dans un volume partagé).
 
-2.  Lancer la stack :
+3.  Lancer la stack :
 
     ```bash
     cd docker
@@ -57,7 +57,7 @@ Ces fichiers décrivent la configuration Fail2ban utilisée pour la démonstrati
 
     La commande **task up** démarre l'ensemble des services.
 
-3.  Accéder aux services en local :
+4.  Accéder aux services en local :
 
 > Lors du premier démarrage, l’API doit être accessible et montée sur le navigateur pour que le reverse proxy puisse établir correctement les connexions HTTPS.
 
@@ -66,11 +66,18 @@ Ces fichiers décrivent la configuration Fail2ban utilisée pour la démonstrati
 
 ![Application en fonctionnement](images/map.png)
 
-4.  Obtenir l'URL publique :
+5.  Obtenir l'URL publique :
 
         ```bash
         docker compose logs cloudflared
         ```
+
+Le tunnel Cloudflare est bien créé et une URL publique est générée dynamiquement, visible dans les logs du conteneur `cloudflared`.
+L’URL est accessible depuis un navigateur.
+Cependant, dans cette version Docker, des limitations sont rencontrées lors de l’utilisation simultanée de l’accès local et de l’exposition via Cloudflare Tunnel.
+Ces difficultés sont liées à la gestion du HTTPS entre Cloudflare et le reverse proxy Caddy, pouvant provoquer des boucles de redirection.
+
+**Afin de garantir un fonctionnement stable et cohérent avec Cloudflare, une version Kubernetes dédiée est proposée (kubernetes-v2), dans laquelle l’exposition via Cloudflare est maitrisée.**
 
     **Logs Cloudflare**
 
